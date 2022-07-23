@@ -1,0 +1,269 @@
+jQuery(document).ready(function($) {
+	jQuery('#manganh').change(function(event) {
+		var idnganh = jQuery('#manganh').children(":selected").attr("id");
+
+		var chuoi = "<option>--Chọn tổ hợp môn--</option>";
+
+		//console.log(idnganh);
+
+		jQuery.ajax({
+			url: my_ajax_url.ajax_url,
+			type: 'post',
+			data: {
+				action: 'my_ajax_function',
+				data:  idnganh
+			},
+			success : function( data ){
+				ds_mon = jQuery.parseJSON(data);
+
+
+				$.each(ds_mon, function(index, value){
+                chuoi += '<option value="'+value.ID+'">'+ value.khoi +' - '+value.to_hop_mon+'</option>';
+              	});
+
+              	jQuery('#tohopmonxettuyen').html(chuoi);
+              	jQuery('#tohopmonxettuyen').removeAttr("disabled");
+			}
+		});
+	});
+	jQuery('#manganh2').change(function(event) {
+		var idnganh = jQuery('#manganh2').children(":selected").attr("id");
+
+		var chuoi = "<option>--Chọn tổ hợp môn--</option>";
+
+		//console.log(idnganh);
+
+		jQuery.ajax({
+			url: my_ajax_url.ajax_url,
+			type: 'post',
+			data: {
+				action: 'my_ajax_function',
+				data:  idnganh
+			},
+			success : function( data ){
+				ds_mon = jQuery.parseJSON(data);
+
+
+				$.each(ds_mon, function(index, value){
+                chuoi += '<option value="'+value.ID+'">'+ value.khoi +' - '+value.to_hop_mon+'</option>';
+              	});
+
+              	jQuery('#tohopmonxettuyen2').html(chuoi);
+              	jQuery('#tohopmonxettuyen2').removeAttr("disabled");
+			}
+		});
+	});
+	
+	jQuery('#manganh3').change(function(event) {
+		var idnganh = jQuery('#manganh3').children(":selected").attr("id");
+
+		var chuoi = "<option>--Chọn tổ hợp môn--</option>";
+
+		//console.log(idnganh);
+
+		jQuery.ajax({
+			url: my_ajax_url.ajax_url,
+			type: 'post',
+			data: {
+				action: 'my_ajax_function',
+				data:  idnganh
+			},
+			success : function( data ){
+				ds_mon = jQuery.parseJSON(data);
+
+
+				$.each(ds_mon, function(index, value){
+                chuoi += '<option value="'+value.ID+'">'+ value.khoi +' - '+value.to_hop_mon+'</option>';
+              	});
+
+              	jQuery('#tohopmonxettuyen3').html(chuoi);
+              	jQuery('#tohopmonxettuyen3').removeAttr("disabled");
+			}
+		});
+	});
+});										 
+
+jQuery(document).ready(function($) {	
+	
+	$('.truongTHPT').autoComplete({
+		minChars: 3,
+		source: function(name, response) {
+
+			$.ajax({
+				type: 'POST',
+				dataType: 'json',
+			    url: my_ajax_url.ajax_url,
+				data: 'action=get_listing_truongTHPT&name='+name,
+				success: function(data) {
+			
+					response(data);
+			
+				}
+			});
+
+		}
+	});
+
+
+    $('#truongDHCD').autoComplete({
+        minChars: 3,
+        source: function(name, response) {
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: my_ajax_url.ajax_url,
+                data: 'action=get_listing_truongDHCD&name='+name,
+                success: function(data) {
+            
+                    response(data);
+            
+                }
+            });
+
+        }
+    });
+
+     $('#hokhau').autoComplete({
+        minChars: 2,
+        source: function(name, response) {
+
+            $.ajax({
+                type: 'POST',
+                dataType: 'json',
+                url: my_ajax_url.ajax_url,
+                data: 'action=get_listing_HoKhau&name='+name,
+                success: function(data) {
+            
+                    response(data);
+            
+                }
+            });
+
+        }
+    });
+
+
+	function getIdTruongTHPT(str)
+	{
+		var pos = str.lastIndexOf("@");
+    	var len = str.length;
+
+    	var id = str.substring(pos+1, len);
+
+    	return id;
+
+	}
+
+    function getMaTruongDHCD(str)
+    {
+        var pos = str.indexOf("-");
+       
+
+        var matruong = str.substring(0, pos-1);
+
+        return matruong;
+
+    }
+
+
+    function getIDTinh(str)
+    {
+       
+        var idtinh = str.substr(0,2);
+
+        return idtinh;
+
+    }
+
+    function getIDHuyen(str)
+    {
+      
+
+        var idhuyen = str.substr(2,2);
+
+
+        return idhuyen;
+
+    }
+
+    $("#truongDHCD").blur(function(){
+        var truongDHCD_text = $("#truongDHCD").val();
+        var truongDHCD_matruong = getMaTruongDHCD(truongDHCD_text);
+        
+        
+        //gán giá trị cho hidden field
+        $("#truongDHCD_matruong").val(truongDHCD_matruong);
+        
+    });
+
+      $("#hokhau").blur(function(){
+        var hokhau = $("#hokhau").val();
+        var IDTinh = getIDTinh(hokhau);
+        var IDHuyen = getIDHuyen(hokhau);
+
+        
+        //gán giá trị cho hidden field
+        $("#IDtinh").val(IDTinh);
+        $("#IDhuyen").val(IDHuyen);
+      
+        
+    });
+
+	// khi chuyển khỏi field lớp 10
+	$("#lop10THPT_text").blur(function(){
+    	var lop10THPT_text = $("#lop10THPT_text").val();
+    	var lop10THPT_id = getIdTruongTHPT(lop10THPT_text);
+    	
+    	if (isNaN(lop10THPT_id))
+    		alert("Sai id trường THPT - lớp 10");
+
+    	//gán giá trị cho hidden field
+    	$("#lop10THPT_id").val(lop10THPT_id);
+    	
+
+    	//tự động sao chép sang lớp 11
+    	$("#lop11THPT_text").val($("#lop10THPT_text").val());
+	});
+
+	// khi chuyển khỏi field lớp 11
+	$("#lop11THPT_text").blur(function(){
+    	var lop11THPT_text = $("#lop11THPT_text").val();
+    	var lop11THPT_id = getIdTruongTHPT(lop11THPT_text);
+    	
+    	if (isNaN(lop11THPT_id))
+    		alert("Sai id trường THPT - Lớp 11");
+
+    	//gán giá trị cho hidden field
+    	$("#lop11THPT_id").val(lop11THPT_id);
+    	
+
+    	//tự động sao chép sang lớp 12
+    	$("#lop12THPT_text").val($("#lop11THPT_text").val());
+	});
+
+	// khi chuyển khỏi field lớp 12
+	$("#lop12THPT_text").blur(function(){
+    	var lop12THPT_text = $("#lop12THPT_text").val();
+    	var lop12THPT_id = getIdTruongTHPT(lop12THPT_text);
+    	
+    	if (isNaN(lop12THPT_id))
+    		alert("Sai id trường THPT - Lớp 12");
+
+    	//gán giá trị cho hidden field
+    	$("#lop12THPT_id").val(lop12THPT_id);
+    	
+    	//không có đoạn sao chép giá trị
+    	
+	});
+
+
+
+	
+ 
+});
+
+
+
+
+

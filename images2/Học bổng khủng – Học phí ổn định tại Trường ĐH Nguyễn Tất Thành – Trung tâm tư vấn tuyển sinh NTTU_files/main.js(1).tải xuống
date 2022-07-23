@@ -1,0 +1,12 @@
+jQuery(document).ready(function($){
+	$('.list-banner').owlCarousel({
+      items: 1,
+      loop: true,
+      margin: 0,
+      autoplay: false,
+      autoplayTimeout: 5500,
+      nav: false,
+      dots: false,
+      autoHeight: true,
+   });
+});
